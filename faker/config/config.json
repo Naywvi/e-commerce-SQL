@@ -1,0 +1,57 @@
+{
+    "DB": {
+        "NAME": "ecommerce.db",
+        "PATH": "./",
+        "USERS": [],
+        "PRODUCTS": []
+    },
+    "USER": {
+        "idUser": 2,
+        "firstName": "Kari",
+        "lastName": "Stamm",
+        "email": "Kip_Feest@hotmail.com",
+        "phoneNumber": ""
+    },
+    "ADDRESS": {
+        "idAddress": "",
+        "idUser": "",
+        "address": "",
+        "country": "",
+        "city": "",
+        "postalCode": ""
+    },
+    "TYPE_OF_PRODUCT": {
+        "idType": "",
+        "name": ""
+    },
+    "PRODUCT": {
+        "idProduct": "",
+        "name": "",
+        "idType": "",
+        "description": "",
+        "image": "",
+        "stockAvailable": "",
+        "price": ""
+    },
+    "COMMAND": {
+        "idCommand": "",
+        "idUser": "",
+        "total": ""
+    },
+    "COMMAND_LINE": {
+        "idCommandLine": "",
+        "idCommand": "",
+        "idProduct": ""
+    },
+    "CART": {
+        "idCart": "",
+        "idUser": "",
+        "total": "",
+        "limitDate": ""
+    },
+    "CART_TEMP": {
+        "idCart_Temp": "",
+        "idCart": "",
+        "idProduct": ""
+    }
+}

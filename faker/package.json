@@ -1,0 +1,18 @@
+{
+    "devDependencies": {
+        "@faker-js/faker": "^7.6.0"
+    },
+    "name": "faker",
+    "version": "1.0.0",
+    "main": "index.js",
+    "scripts": {
+        "start": "node index.js"
+    },
+    "author": "",
+    "license": "ISC",
+    "description": "",
+    "dependencies": {
+        "crypto": "^1.0.1",
+        "sqlite3": "^5.1.2"
+    }
+}
