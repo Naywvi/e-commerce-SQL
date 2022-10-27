@@ -10,5 +10,5 @@ class FakeDb {
         this.db = new Database(CONFIG.DB.NAME);
     }
 }
-constre = new ConfigJSON()
-//const start = new FakeDb()
+const jsonD = new ConfigJSON()
+const start = new FakeDb()
