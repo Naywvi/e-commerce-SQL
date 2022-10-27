@@ -31,7 +31,7 @@ const tt = (task) => {
             return `
                 CREATE TABLE type_of_product(
                     idType INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-                    name varchar(20) NOT NULL
+                    name varchar(40) NOT NULL
                     );
                 `
         case "CREATE_TABLE_PRODUCT":
@@ -41,7 +41,7 @@ const tt = (task) => {
                     name varchar(50) NOT NULL,
                     idType INTEGER NOT NULL,
                     description TEXT NOT NULL,
-                    image BLOB NOT NULL,
+                    image varchar(50) NOT NULL,
                     stockAvailable INTEGER NOT NULL,
                     price Float NOT NULL,
                     FOREIGN KEY (idType) REFERENCES type_of_product(idType)
@@ -87,6 +87,29 @@ const tt = (task) => {
                     FOREIGN KEY (idProduct) REFERENCES product(idProduct)
                     );
                     `
+        case "INSERT_TABLE_USERS":
+            return `INSERT INTO users(firstName, lastName, email, phoneNumber) VALUES (?, ?, ?, ?)`
+
+        case "INSERT_TABLE_ADDRESS":
+            return "INSERT INTO address(idUser, address, country, city, postalCode) VALUES(?, ?, ?, ?, ?)"
+
+        case "INSERT_TABLE_TYPE_OF_PRODUCT":
+            return "INSERT INTO type_of_product(name) VALUES(?)"
+
+        case "INSERT_TABLE_PRODUCT":
+            return "INSERT INTO product(name, idType, description, image, stockAvailable, price) VALUES(?, ?, ?, ?, ?, ?)"
+
+        case "INSERT_TABLE_COMMAND":
+            return "INSERT INTO command(idUser, total) VALUES(?, ?)"
+
+        case "INSERT_TABLE_COMMAND_LINE":
+            return "INSERT INTO command_line(idCommand, idProduct) VALUES(?, ?)"
+
+        case "INSERT_TABLE_CART":
+            return "INSERT INTO cart(idUser, total, limitDate) VALUES(?, ?, ?)"
+
+        case "INSERT_TABLE_CART_TEMP":
+            return "INSERT INTO cart_temp(idCart, idProduct) VALUES(?, ?)"
     }
     return null
 }
@@ -94,16 +117,41 @@ module.exports = class Database {
     constructor(DatabaseName) {
         this.db = new sqlite3.Database(DatabaseName, (err) => {
             if (err) console.error(err.message);
-            console.log(` [+] Connected to the Database: $ { CONFIG.DB.NAME }
-                `);
+            console.log(` [+] Connected to the Database: ${ CONFIG.DB.NAME }`);
         });
-        this.createTables();
+        //this.createTables();
+        this.insert();
     }
 
 
-    insert(FirstName, LastName, Rank) {
-        setTimeout(() =>
-            this.db.run(tt("INSERT_TABLE_USERS"), [this.generateIdConnect(FirstName), FirstName.charAt(0).toUpperCase() + FirstName.slice(1).toLowerCase(), LastName.charAt(0).toUpperCase() + LastName.slice(1).toLowerCase(), this.generateToken(), Rank]), 500)
+    insert() {
+
+        var js = CONFIG
+
+        for (let index = 1; index < js.USER.idUser.length; index++) {
+            setTimeout(() => this.db.run(tt("INSERT_TABLE_USERS"), [js.USER.firstName[index], js.USER.lastName[index], js.USER.email[index], js.USER.phoneNumber[index]]), 500)
+        }
+        for (let index = 1; index < js.ADDRESS.idAddress.length; index++) {
+            setTimeout(() => this.db.run(tt("INSERT_TABLE_ADDRESS"), [js.ADDRESS.idUser[index], js.ADDRESS.address[index], js.ADDRESS.country[index], js.ADDRESS.city[index], js.ADDRESS.postalCode[index]]), 500)
+        }
+        for (let index = 1; index < js.TYPE_OF_PRODUCT.idType.length; index++) {
+            setTimeout(() => { this.db.run(tt("INSERT_TABLE_TYPE_OF_PRODUCT"), [js.TYPE_OF_PRODUCT.name[index]]) }, 500)
+        }
+        for (let index = 0; index < js.PRODUCT.idProduct.length; index++) {
+            setTimeout(() => { this.db.run(tt("INSERT_TABLE_PRODUCT"), [js.PRODUCT.name[index], js.PRODUCT.idType[index], js.PRODUCT.description[index], js.PRODUCT.image[index], js.PRODUCT.stockAvailable[index], js.PRODUCT.price[index]]) })
+        }
+        for (let index = 0; index < js.COMMAND.idCommand.length; index++) {
+            setTimeout(() => { this.db.run(tt("INSERT_TABLE_COMMAND"), [js.COMMAND.idUser[index], js.COMMAND.total[index]]) })
+        }
+        for (let index = 0; index < js.COMMAND_LINE.idCommandLine.length; index++) {
+            setTimeout(() => { this.db.run(tt("INSERT_TABLE_COMMAND_LINE"), [js.COMMAND_LINE.idCommand[index], js.COMMAND_LINE.idProduct[index]]) })
+        }
+        for (let index = 0; index < js.CART.idCart.length; index++) {
+            setTimeout(() => { this.db.run(tt("INSERT_TABLE_CART"), [js.CART.idUser[index], js.CART.total[index], js.CART.limitDate[index]]) })
+        }
+        for (let index = 0; index < js.CART_TEMP.idCart_Temp.length; index++) {
+            setTimeout(() => { this.db.run(tt("INSERT_TABLE_CART_TEMP"), [js.CART_TEMP.idCart[index], js.CART_TEMP.idProduct[index]]) })
+        }
     }
 
     createTables() {
@@ -120,6 +168,7 @@ module.exports = class Database {
         Tasks.forEach(tableTask => {
             this.db.run(tableTask);
         });
+
     }
 
     closeDb() {

@@ -6,9 +6,9 @@ const ConfigJSON = require("./config/config.js");
 
 class FakeDb {
     constructor() {
-        this.config = new ConfigJSON()
+        //this.config = new ConfigJSON()
         this.db = new Database(CONFIG.DB.NAME);
     }
 }
-const jsonD = new ConfigJSON()
+//const jsonD = new ConfigJSON()
 const start = new FakeDb()
